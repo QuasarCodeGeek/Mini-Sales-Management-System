@@ -15,7 +15,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Sales({sales}: {sales: any[]}) {
-    
+    console.log(sales)
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Sales" />

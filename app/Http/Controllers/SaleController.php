@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sale;
+use App\Models\SaleItem;
+use App\Models\Customer;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -14,7 +16,7 @@ class SaleController extends Controller
      */
     public function index()
     {
-        $sales = Sale::with('customer', 'items.product')->latest()->get();
+        $sales = Sale::with(['customer'])->latest()->get();
         return Inertia::render('sales/index', ['sales' => $sales]);
     }
 
@@ -25,16 +27,21 @@ class SaleController extends Controller
     {
         $products = Product::all()->map(function ($p) {
             return [
-                'value' => $p->id,
-                'name' => $p->name,
-                'id_label' => $p->id,
+                'id' => $p->id,
                 'price' => $p->price,
+                'name' => $p->name,
                 'stock' => $p->stock,
+                'sku' => $p->sku,
                 'isDisabled' => $p->stock <= 0,
             ];
         });
+
+        $customers = Customer::select('id', 'name')->get();
         
-        return Inertia::render('sales/create', ['products' => $products]);
+        return Inertia::render('sales/create', [
+            'products' => $products,
+            'customers' => $customers
+        ]);
     }
 
     /**
@@ -44,30 +51,37 @@ class SaleController extends Controller
     {
         $request->validate([
             'customer_id' => 'required|exists:customers,id',
+            'total_amount' => 'required|numeric',
             'items' => 'required|array',
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.quantity' => 'required|integer|min:1',
+            'items.*.price' => 'required|numeric',
         ]);
+
+        $products = Product::whereIn('id', collect($request->items)->pluck('product_id'))->get()->keyBy('id');
 
         $total = 0;
         foreach ($request->items as $item) {
-            $product = Product::find($item['product_id']);
+            $product = $products[$item['product_id']];
             $total += $product->price * $item['quantity'];
-        }
+        };
 
         $sale = Sale::create([
             'customer_id' => $request->customer_id,
-            'total_amount' => $total,
+            'total_amount' => $request->total_amount
         ]);
 
+        $saleItems = [];
         foreach ($request->items as $item) {
-            $product = Product::find($item['product_id']);
-            $sale->items()->create([
+            $product = $products[$item['product_id']];
+            $saleItems[] = [
                 'product_id' => $product->id,
                 'quantity' => $item['quantity'],
                 'price' => $product->price,
-            ]);
-        }
+            ];
+        };
+
+        $sale->items()->createMany($saleItems);
 
         return redirect()->back();
     }
