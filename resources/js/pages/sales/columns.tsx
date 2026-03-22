@@ -4,7 +4,9 @@ import { router } from '@inertiajs/react';
 
 export type Product = {
     id: number,
-    customer_id: number,
+    customer: {
+        name: string
+    },
     total_amount: number
 }
 
@@ -12,14 +14,17 @@ export const columns: ColumnDef<Product>[] = [
     {
         accessorKey: "id",
         header: "Transaction ID",
+        enableMultiSort: true,
     },
     {
-        accessorKey: "customer_id",
+        accessorKey: "customer.name",
         header: "Customer",
+        enableMultiSort: true,
     },
     {
         accessorKey: "total_amount",
         header: "Total Amount",
+        enableMultiSort: true,
     },
     {
         header: "Actions",

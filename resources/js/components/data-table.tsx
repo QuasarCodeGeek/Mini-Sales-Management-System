@@ -4,11 +4,15 @@ import {
     getCoreRowModel,
     useReactTable,
     getFilteredRowModel,
-    getPaginationRowModel
+    getPaginationRowModel,
+    getSortedRowModel,
+    SortingState
 } from "@tanstack/react-table"
 import { Input } from "./ui/input"
 import { Button } from "./ui/button"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from "./ui/select"
+import { useState } from "react"
+import { ChevronUp, ChevronDown, ChevronsUpDown } from "lucide-react"
 // import { Pagination } from "./data-table-pagination"
 
 
@@ -22,13 +26,23 @@ export function DataTable<TData>({
     data,
 }: DataTableProps<TData>) {
 
+    const [sorting, setSorting] = useState<SortingState>([]);
+
     const table = useReactTable({
         data,
         columns,
+        state: {
+            sorting,
+        },
+        onSortingChange: setSorting,
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
-        initialState: { pagination: { pageIndex: 0, pageSize: 5 } }, // optional: 5 rows per page
+        initialState: {
+            pagination: { pageIndex: 0, pageSize: 10 },
+            sorting: [ {id: "product_id", desc: true} ]
+        },
+        getSortedRowModel: getSortedRowModel(), 
     })
 
     return (
@@ -101,11 +115,15 @@ export function DataTable<TData>({
                         {table.getHeaderGroups().map((hg) => (
                         <tr key={hg.id}>
                             {hg.headers.map((header) => (
-                            <th key={header.id} className="p-3 text-left font-semibold">
-                                {flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                                )}
+                            <th
+                                key={header.id}
+                                className="p-3 text-left font-semibold cursor-pointer select-none"
+                                onClick={header.column.getToggleSortingHandler()} // ✅ toggle sorting
+                                >
+                                {flexRender(header.column.columnDef.header, header.getContext())}
+                                
+                                {header.column.getIsSorted() === "asc" && <ChevronUp className="inline-block w-4 h-4 ml-1" />}
+                                {header.column.getIsSorted() === "desc" && <ChevronDown className="inline-block w-4 h-4 ml-1" />}
                             </th>
                             ))}
                         </tr>

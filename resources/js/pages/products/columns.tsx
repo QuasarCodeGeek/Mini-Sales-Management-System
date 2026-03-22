@@ -13,18 +13,22 @@ export const columns: ColumnDef<Product>[] = [
     {
         accessorKey: "id",
         header: "Product ID",
+        enableMultiSort: true,
     },
     {
         accessorKey: "name",
         header: "Name",
+        enableMultiSort: true,
     },
     {
         accessorKey: "sku",
         header: "SKU",
+        enableMultiSort: true,
     },
     {
         accessorKey: "price",
         header: "Price",
+        enableMultiSort: true,
         cell: ({row}) => (
             <span>
                 ₱ {row.original.price}
@@ -34,6 +38,7 @@ export const columns: ColumnDef<Product>[] = [
     {
         accessorKey: "stock",
         header: "Stock",
+        enableMultiSort: true,
         cell: ({row}) => (
             <span className={row.original.stock < 10 ? 'text-red-500' : ''}>
                 {row.original.stock}

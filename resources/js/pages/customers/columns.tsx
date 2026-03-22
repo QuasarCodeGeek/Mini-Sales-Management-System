@@ -13,10 +13,12 @@ export const columns: ColumnDef<Customer>[] = [
     {
         accessorKey: "id",
         header: "Customer ID",
+        enableMultiSort: true,
     },
     {
         accessorKey: "name",
         header: "Name",
+        enableMultiSort: true,
     },
     {
         accessorKey: "contact",
@@ -25,6 +27,7 @@ export const columns: ColumnDef<Customer>[] = [
     {
         accessorKey: "address",
         header: "Address",
+        enableMultiSort: true,
     },
     {
         header: "Actions",
