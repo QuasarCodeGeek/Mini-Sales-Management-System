@@ -8,8 +8,8 @@ This project demonstrates a modern **SPA architecture** with CRUD functionality,
 ## 📌 Table of Contents
 - [Features](#-features)
 - [Technology Stack](#-technology-stack)
+- [Installation & Setup](#-installation--setup)
 - [Current Status](#-current-status)
-- [Run in Development](#-run-in-development)
 - [Future Improvements](#-future-improvements)
 
 ---
@@ -27,6 +27,7 @@ This project demonstrates a modern **SPA architecture** with CRUD functionality,
 - **Sales Management**
   - Record sales transactions.
   - Select products, input quantity, and automatically calculate total.
+  - VAT (12%) computation and change calculation.
 - **SPA Experience**
   - Smooth page navigation using **Inertia.js + React**.
 
@@ -47,13 +48,92 @@ This project demonstrates a modern **SPA architecture** with CRUD functionality,
 
 ---
 
+## ⚙️ Installation & Setup
+
+### Prerequisites
+- PHP >= 8.2
+- Composer
+- Node.js >= 18
+- MySQL
+
+### Steps
+
+**1. Clone the repository**
+```bash
+git clone https://github.com/QuasarCodeGeek/Mini-Sales-Management-System.git
+cd sample-erp
+```
+
+**2. Install PHP dependencies**
+```bash
+composer install
+```
+
+**3. Install Node dependencies**
+```bash
+npm install
+```
+
+**4. Configure environment**
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+**5. Set up your database in `.env`**
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=sample_erp
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+**6. Run migrations & seeders**
+```bash
+php artisan migrate --seed
+```
+
+**7. Start development server**
+```bash
+composer run dev
+```
+
+> This will concurrently run `php artisan serve`, `npm run dev`, and the queue worker.
+
+---
+
 ## 📊 Current Status
-- Core modules for **products, customers, and sales** are functional.
-- Dashboard analytics are implemented for quick insights.
-- SPA navigation is fully working with Inertia.js + React.
+
+- ✅ Core modules for **products, customers, and sales** are functional.
+- ✅ Dashboard analytics implemented for quick insights.
+- ✅ SPA navigation fully working with Inertia.js + React.
+- ✅ Sales transaction with VAT computation and change calculation.
+- ✅ Data table with sorting, filtering, and pagination.
+- 🚧 Stock deduction on sales — in progress.
 
 ---
 
 ## 🚀 Run in Development
 ```bash
 composer run dev
+```
+
+---
+
+## 🔮 Future Improvements
+
+- [ ] Stock deduction on every sales transaction
+- [ ] Sales reports with date range filtering
+- [ ] PDF/Excel export for reports
+- [ ] Discount support (PWD, Senior Citizen)
+- [ ] User authentication with role-based access (Admin, Cashier)
+- [ ] Refund / Return management
+- [ ] Dark mode refinements
+
+---
+
+## 📝 License
+
+This project is for educational and portfolio purposes only.
