@@ -1,34 +1,33 @@
-import { Head, useForm, router } from '@inertiajs/react';
-import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem } from '@/types';
-import nav from '@/routes/products';
+import { Head, useForm } from '@inertiajs/react';
+import { Clock } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ProductSelect } from '@/components/product-select';
+import { GenericSelect } from '@/components/react-select';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import { showAlert } from '@/components/ui/sweet-alert';
-import { useEffect, useState } from 'react';
-import { Clock } from 'lucide-react';
-import Select from 'react-select'
-import { ProductSelect } from '@/components/product-select';
-import { GenericSelect } from '@/components/react-select';
+import AppLayout from '@/layouts/app-layout';
+import nav from '@/routes/sales';
+import type { BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Products',
+        title: 'Sales',
         href: nav.index(),
     },
     {
-        title: 'Add Product',
+        title: 'Add Transaction',
         href: nav.create(),
     },
 ];
 
 export default function AddTransaction({customers, products}: {customers: any, products: any}) {
-    const {data, setData, post, processing} = useForm({
-        customer_id: null,
+    const { post, processing, transform } = useForm({
+        customer_id: null as any,
         total_amount: 0,
-        items: {},
+        items: [] as any[],
     });
 
     const [customer, setCustomer] = useState<any>(null)
@@ -38,12 +37,13 @@ export default function AddTransaction({customers, products}: {customers: any, p
     const [total, setTotal] = useState(0)
     const [subtotal, setSubTotal] = useState(0)
     const [vat, setVat] = useState(0)
-    const [payment, setPayment] = useState(0)
     const [change, setChange] = useState(0)
     // const [discount, setDicount] = useState(0)
 
     const handleSelectedProduct = () => {
-        if (!selectedProduct) return
+        if (!selectedProduct) {
+            return
+        }
 
         const quantity = qty > 0 ? qty : 1
 
@@ -103,22 +103,18 @@ export default function AddTransaction({customers, products}: {customers: any, p
     }
 
     function computeChange(value: number){
-        const newPayment = value;
         const newChange = value-total;
-        setPayment(newPayment);
         setChange(newChange);
     }
 
     function handleSubmit (e: React.FormEvent) {
         e.preventDefault();
 
-
-
-        setData({
+        transform(() => ({
             customer_id: customer.id,
             total_amount: total,
-            items: items
-        });
+            items: items,
+        }));
 
         post('/sales', {
             onSuccess: () => {

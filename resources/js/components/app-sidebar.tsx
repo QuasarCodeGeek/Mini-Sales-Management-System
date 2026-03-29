@@ -14,8 +14,8 @@ import {
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
-import products from '@/routes/products';
 import customers from '@/routes/customers';
+import products from '@/routes/products';
 import sales from '@/routes/sales'; 
 import type { NavItem } from '@/types';
 

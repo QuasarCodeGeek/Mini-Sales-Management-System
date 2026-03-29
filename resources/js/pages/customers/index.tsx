@@ -1,9 +1,9 @@
 import { Head, router } from '@inertiajs/react';
-import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem } from '@/types';
-import nav from '@/routes/customers';
 import { DataTable } from "@/components/data-table";
 import { Button } from '@/components/ui/button';
+import AppLayout from '@/layouts/app-layout';
+import nav from '@/routes/customers';
+import type { BreadcrumbItem } from '@/types';
 import { columns } from "./columns";
 
 export default function Customers({customers}: {customers: any}) {
@@ -20,7 +20,7 @@ export default function Customers({customers}: {customers: any}) {
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 
                 <div className='flex items-center justify-end'>
-                    <Button onClick={(e) => router.get(nav.create())} variant='default'>Add Customer</Button>
+                    <Button onClick={() => router.get(nav.create())} variant='default'>Add Customer</Button>
                 </div>
 
                 <DataTable

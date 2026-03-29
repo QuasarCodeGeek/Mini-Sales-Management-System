@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button"
-import { ColumnDef } from "@tanstack/react-table"
 import { router } from '@inertiajs/react';
+import type { ColumnDef } from "@tanstack/react-table"
+import { Button } from "@/components/ui/button"
 
 export type Customer = {
     id: number

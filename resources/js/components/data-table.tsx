@@ -1,18 +1,20 @@
-import {
+import type {
     ColumnDef,
+    SortingState
+} from "@tanstack/react-table";
+import {
     flexRender,
     getCoreRowModel,
     useReactTable,
     getFilteredRowModel,
     getPaginationRowModel,
-    getSortedRowModel,
-    SortingState
+    getSortedRowModel
 } from "@tanstack/react-table"
-import { Input } from "./ui/input"
-import { Button } from "./ui/button"
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from "./ui/select"
+import { ChevronUp, ChevronDown } from "lucide-react"
 import { useState } from "react"
-import { ChevronUp, ChevronDown, ChevronsUpDown } from "lucide-react"
+import { Button } from "./ui/button"
+import { Input } from "./ui/input"
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from "./ui/select"
 // import { Pagination } from "./data-table-pagination"
 
 
